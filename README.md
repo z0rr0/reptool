@@ -1,2 +1,3 @@
-# reptool
-Team work report tool
+# RepTool
+
+Team work report tool.
