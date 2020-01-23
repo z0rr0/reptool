@@ -15,7 +15,7 @@ class CreatedUpdatedModel(models.Model):
 
 
 class CommentModel(models.Model):
-    comment = models.TextField(_('comment'))
+    comment = models.TextField(_('comment'), default='', null=False, blank=True)
 
     class Meta:
         abstract = True
