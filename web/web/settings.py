@@ -39,6 +39,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
+    'django.contrib.flatpages',
+    'django.contrib.sitemaps',
 ]
 
 MIDDLEWARE = [
@@ -49,7 +52,13 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware',
+    'team.middleware.SettingsMiddleware',
 ]
+
+# for flatpages and sites apps
+# https://docs.djangoproject.com/en/3.0/ref/contrib/flatpages/
+SITE_ID = 1
 
 ROOT_URLCONF = 'web.urls'
 
@@ -120,6 +129,11 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+# STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
+META_DESCRIPTION = 'Team work report tool'
+META_AUTHOR = 'z0rr0'
 
 if 'test' not in sys.argv:
     # overwrite custom settings
