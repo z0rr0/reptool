@@ -3,6 +3,8 @@ from urllib.parse import urljoin
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
+from team.lib import iteration_dates
+
 
 # ----------- abstract models -----------
 
@@ -63,11 +65,11 @@ class Task(CreatedUpdatedModel, CommentModel):
 
 
 class Iteration(CreatedUpdatedModel, CommentModel):
-    start = models.DateField(_('start'))
-    stop = models.DateField(_('stop'))
+    start = models.DateField(_('start'), default=lambda: iteration_dates()[0])
+    stop = models.DateField(_('stop'), default=lambda: iteration_dates()[1])
 
     class Meta:
-        ordering = ('start',)
+        ordering = ('-start',)
         index_together = ('start', 'stop')
 
     def __str__(self) -> str:
@@ -87,7 +89,7 @@ class Report(CreatedUpdatedModel, CommentModel):
         (DONE, _('Done')),
     )
 
-    iteration = models.ForeignKey(Iteration, on_delete=models.CASCADE)
+    iteration = models.ForeignKey(Iteration, on_delete=models.CASCADE, related_name='reports')
     worker = models.ForeignKey(Worker, on_delete=models.CASCADE)
     task = models.ForeignKey(Task, on_delete=models.CASCADE)
     status = models.CharField(_('status'), max_length=32, choices=STATUS_CHOICES, default=PLANNED, db_index=True)

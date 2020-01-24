@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% block title %}{{ title }}{% endblock %}
+{% block content %}
+  <h1 class="mt-5">{% trans "Interations" %}</h1>
+  <table class="table table-striped">
+    <thead class="thead-dark">
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">{% trans "Dates" %}</th>
+        <th scope="col">{% trans "Comment" %}</th>
+        <th scope="col">{% trans "Created" %}</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for iter in iterations %}
+        <tr>
+          <th scope="row">{{ forloop.counter }}</th>
+          <td><a href="{% url 'iteration' iter.pk %}" title="{% trans 'Show details' %}">{{ iter }}</a></td>
+          <td>{{ iter.comment }}</td>
+          <td>{{ iter.created }}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  {% if paginator.num_pages > 1 %}
+    {% include "pagination.html" with page=page_obj page_range=paginator.page_range %}
+  {% endif %}
+{% endblock %}

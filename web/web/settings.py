@@ -134,6 +134,7 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 
 META_DESCRIPTION = 'Team work report tool'
 META_AUTHOR = 'z0rr0'
+OBJECTS_PER_PAGE = 20
 
 if 'test' not in sys.argv:
     # overwrite custom settings

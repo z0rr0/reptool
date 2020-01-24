@@ -2,7 +2,30 @@
 {% load i18n %}
 {% block title %}{% trans "Interation" %}{% endblock %}
 {% block content %}
-  <h1 class="mt-5">{% trans "Interation" %}</h1>
+  <h1 class="mt-5">{% trans "Interation" %} {{ iteration }}</h1>
   <hr>
-  iteration
+  {% for worker, status_reports in worker_reports %}
+    <h3>{{ worker }}</h3>
+    {% for status, reports in status_reports %}
+      <h5>{{ status }}</h5>
+      {% for report in reports %}
+        <table class="table">
+          <tbody>
+          <tr>
+            <td><a href="{{ report.task.url }}" title="{{ report.task.number }}">{{ report.task.url }}</a></td>
+            <td>{{ report.task.title }}</td>
+            <td>{{ report.comment }}</td>
+            <td>
+              <form action="{% url 'report_update' report.pk %}" method="post" id="report_{{ report.pk }}" class="form-inline">
+                    {% csrf_token %}
+                    {{ report.form }}
+                    <button type="submit" class="btn btn-primary my-1">{% trans 'Update' %}</button>
+              </form>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      {% endfor %}
+    {% endfor %}
+  {% endfor %}
 {% endblock %}
