@@ -14,3 +14,7 @@ main > .container {
 code {
   font-size: 80%;
 }
+
+.task a {
+  color: white;
+}
