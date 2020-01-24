@@ -5,8 +5,8 @@ from django.conf import settings
 from django.contrib import messages
 from django.db import transaction
 from django.shortcuts import get_object_or_404, redirect, reverse
-from django.views.decorators.http import require_POST
 from django.utils.translation import gettext_lazy as _
+from django.views.decorators.http import require_POST
 from django.views.generic import CreateView, DetailView, ListView, UpdateView
 
 from team.forms import ReportCreateForm, ReportForm
@@ -101,13 +101,12 @@ def report_create(request, iteration_id: int, worker_id: int):
 def iteration_create(request, pk: int):
     base_iteration = get_object_or_404(Iteration, pk=pk)
     start, stop = iteration_dates(base_iteration.start)
-    iteration = Iteration.objects.create(
-        start=start,
-        stop=stop,
-    )
+
+    iteration = Iteration.objects.create(start=start, stop=stop)
     base_reports = base_iteration.reports.filter(
         status__in=(Report.PLANNED, Report.IN_PROGRESS),
     )
+    # reports migration to planned status
     reports = [
         Report(
             iteration=iteration,

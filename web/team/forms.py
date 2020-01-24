@@ -57,8 +57,7 @@ class ReportCreateForm(ModelForm):
             if data.get('number') and data.get('title'):
                 task_values = data['number'].rsplit('/', 1)
                 if len(task_values) != 2:
-                    raise ValidationError(_('failed task number'))
-
+                    raise ValidationError(_('failed task URL'))
                 try:
                     tracker = Tracker.objects.get(url__startswith=task_values[0])
                 except (Tracker.DoesNotExist, Tracker.MultipleObjectsReturned):
@@ -72,7 +71,7 @@ class ReportCreateForm(ModelForm):
                     },
                 )
                 if not created:
-                    if Report.objects.filter(iteration=self.iteration, task=task).exists():
+                    if self.iteration.reports.fitler(task=task).exists():
                         raise ValidationError(_('task is already exists in this iteration'))
                 data['task'] = task
         return data
