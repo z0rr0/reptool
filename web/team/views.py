@@ -4,9 +4,11 @@ from typing import Iterable, List, Tuple
 from django.conf import settings
 from django.contrib import messages
 from django.db import transaction
+from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect, reverse
+from django.template.loader import render_to_string
 from django.utils.translation import gettext_lazy as _
-from django.views.decorators.http import require_POST
+from django.views.decorators.http import require_GET, require_POST
 from django.views.generic import CreateView, DetailView, ListView, UpdateView
 
 from team.forms import IterationForm, ReportCreateForm, ReportForm
@@ -35,17 +37,13 @@ class IterationDetailView(DetailView):
         return result
 
     @classmethod
-    def _prepare_data(cls, i: Iteration) -> List[Tuple[Worker, List[Tuple[str, List[Report]]]]]:
+    def _prepare_data(cls, i: Iteration) -> List[Tuple[Worker, List[Report]]]:
         result = []
         i.form = IterationForm(instance=i)
         reports = i.reports.select_related('worker', 'task__tracker').order_by('worker', 'status', 'task')
         for worker, items in groupby(reports, lambda x: x.worker):
             worker.form = ReportCreateForm(iteration=i)
-            worker_reports = [
-                (status, cls._set_reports_form(task_items))
-                for status, task_items in groupby(items, lambda y: y.get_status_display())
-            ]
-            result.append((worker, worker_reports))
+            result.append((worker, cls._set_reports_form(items)))
         return result
 
     def get_context_data(self, **kwargs):
@@ -131,3 +129,24 @@ def iteration_create(request, pk: int):
     msg = _('iteration #{} was created with {} new reports')
     messages.success(request, msg.format(iteration.id, len(items)))
     return redirect('index')
+
+
+@require_GET
+def iteration_export(request, pk: int):
+    iteration = get_object_or_404(Iteration, pk=pk)
+    reports = iteration.reports.select_related('worker', 'task__tracker').order_by('worker', 'status', 'task')
+    result = []
+    for worker, items in groupby(reports, lambda x: x.worker):
+        worker_reports = [
+            (status, tuple(task_items))
+            for status, task_items in groupby(items, lambda y: y.get_status_display())
+        ]
+        result.append((worker, worker_reports))
+
+    content = render_to_string('team/export.txt', {'result': result})
+    response = HttpResponse(content, content_type='text/plain')
+    response['Content-Disposition'] = 'attachment; filename="iteration_{}_{}.txt"'.format(
+        iteration.start.strftime('%Y%m%d'),
+        iteration.stop.strftime('%Y%m%d'),
+    )
+    return response

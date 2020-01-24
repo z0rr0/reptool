@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.utils.translation import gettext_lazy as _
 
-from team.models import Report, Task, Tracker, Worker, Iteration
+from team.models import Iteration, Report, Task, Tracker, Worker
 
 
 class TrackerAdmin(admin.ModelAdmin):
@@ -37,6 +37,7 @@ class ReportAdmin(admin.ModelAdmin):
     search_fields = ('task__number', 'task__title', 'worker__name')
     list_filter = ['iteration__start', 'created', 'status']
     actions = [make_done]
+    list_per_page = 30
 
 
 admin.site.register(Tracker, TrackerAdmin)

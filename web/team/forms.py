@@ -71,7 +71,7 @@ class ReportCreateForm(ModelForm):
                     },
                 )
                 if not created:
-                    if self.iteration.reports.fitler(task=task).exists():
+                    if self.iteration.reports.filter(task=task).exists():
                         raise ValidationError(_('task is already exists in this iteration'))
                 data['task'] = task
         return data

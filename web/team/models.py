@@ -109,3 +109,15 @@ class Report(CreatedUpdatedModel, CommentModel):
             worker=self.worker,
             status=self.status,
         )
+
+    @property
+    def is_done(self):
+        return self.status == self.DONE
+
+    @property
+    def is_in_progress(self):
+        return self.status == self.IN_PROGRESS
+
+    @property
+    def is_planned(self):
+        return self.status == self.PLANNED

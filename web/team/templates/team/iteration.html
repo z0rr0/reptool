@@ -2,7 +2,10 @@
 {% load i18n %}
 {% block title %}{% trans "Interation" %}{% endblock %}
 {% block content %}
-  <h1 class="mt-5">{% trans "Interation" %} {{ iteration }}</h1>
+  <h1 class="mt-5">
+    {% trans "Interation" %}
+    <a href="{% url 'iteration_export' iteration.pk %}" title="{% trans 'Export' %}">{{ iteration }}</a>
+  </h1>
   {% if iteration.is_last %}
     <div>
       <form class="form-inline"
@@ -16,47 +19,47 @@
   {% endif %}
 
   <div>
-    <form class="form-inline align-items-center"
+    <form
           action="{% url 'iteration_update' iteration.pk %}"
           method="post"
           id="iteration_update">
-      <div class="form-group mb-2">
-        {% csrf_token %}
-        {{ iteration.form.comment }}
-      </div>
+      {% csrf_token %}
+      {{ iteration.form.comment }}
     </form>
   </div>
 
   <hr>
-  {% for worker, status_reports in worker_reports %}
+  {% for worker, reports in worker_reports %}
     <h3>
       {{ worker }}
     </h3>
-    {% for status, reports in status_reports %}
-      <h5>{{ status }}</h5>
-      <table class="table">
-        <tbody>
-        {% for report in reports %}
-          <tr>
-            <td><a href="{{ report.task.url }}" title="{{ report.task.number }}">{{ report.task.number }}</a></td>
-            <td>{{ report.task.title }}</td>
-            <td>{{ report.comment }}</td>
-            <td>
-              <form class="form-inline"
-                    action="{% url 'report_update' report.pk %}"
-                    method="post"
-                    id="report_{{ report.pk }}">
-                {% csrf_token %}
-                {{ report.form.comment }}
-                {{ report.form.status }}
-                <button type="submit" class="btn btn-primary mb-2">{% trans "Move" %}</button>
-              </form>
-            </td>
-          </tr>
-        {% endfor %}
-        </tbody>
-      </table>
-    {% endfor %}
+    <table class="table">
+      <tbody>
+      {% for report in reports %}
+        <tr>
+          <td><a href="{{ report.task.url }}" title="{{ report.task.number }}">{{ report.task.number }}</a></td>
+          <td>{{ report.task.title }}</td>
+          <td>
+            <span class="badge badge-pill
+            badge-{% if report.is_done %}success{% elif report.is_in_progress %}info{% else %}warning{% endif %}">
+              {{ report.get_status_display }}
+            </span>
+          </td>
+          <td>
+            <form class="form-inline"
+                  action="{% url 'report_update' report.pk %}"
+                  method="post"
+                  id="report_{{ report.pk }}">
+              {% csrf_token %}
+              {{ report.form.comment }}
+              {{ report.form.status }}
+              <button type="submit" class="btn btn-primary mb-2">{% trans "Move" %}</button>
+            </form>
+          </td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
     <form class="form-inline"
           action="{% url 'report_create' iteration.pk worker.pk %}"
           method="post"
