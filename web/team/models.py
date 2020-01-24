@@ -78,6 +78,10 @@ class Iteration(CreatedUpdatedModel, CommentModel):
             stop=self.stop.strftime('%Y-%m-%d'),
         )
 
+    @property
+    def is_last(self):
+        return not self._meta.model.objects.filter(start__gt=self.start).exists()
+
 
 class Report(CreatedUpdatedModel, CommentModel):
     PLANNED = 'planned'

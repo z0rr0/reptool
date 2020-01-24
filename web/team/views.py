@@ -9,7 +9,7 @@ from django.utils.translation import gettext_lazy as _
 from django.views.decorators.http import require_POST
 from django.views.generic import CreateView, DetailView, ListView, UpdateView
 
-from team.forms import ReportCreateForm, ReportForm
+from team.forms import IterationForm, ReportCreateForm, ReportForm
 from team.lib import iteration_dates
 from team.models import Iteration, Report, Worker
 
@@ -37,6 +37,7 @@ class IterationDetailView(DetailView):
     @classmethod
     def _prepare_data(cls, i: Iteration) -> List[Tuple[Worker, List[Tuple[str, List[Report]]]]]:
         result = []
+        i.form = IterationForm(instance=i)
         reports = i.reports.select_related('worker', 'task__tracker').order_by('worker', 'status', 'task')
         for worker, items in groupby(reports, lambda x: x.worker):
             worker.form = ReportCreateForm(iteration=i)
@@ -50,10 +51,16 @@ class IterationDetailView(DetailView):
     def get_context_data(self, **kwargs):
         data = super().get_context_data(**kwargs)
         if self.object:
-            last = self.queryset.only('pk').first()
-            data['last_iteration'] = last.pk
             data['worker_reports'] = self._prepare_data(self.object)
         return data
+
+
+class IterationUpdateView(UpdateView):
+    model = Iteration
+    form_class = IterationForm
+
+    def get_success_url(self):
+        return reverse('iteration', kwargs={'pk': self.object.pk})
 
 
 class ReportUpdateView(UpdateView):
@@ -100,6 +107,10 @@ def report_create(request, iteration_id: int, worker_id: int):
 @transaction.atomic()
 def iteration_create(request, pk: int):
     base_iteration = get_object_or_404(Iteration, pk=pk)
+    if not base_iteration.is_last:
+        messages.error(request, _('this iteration is not the latest'))
+        return redirect('iteration', pk)
+
     start, stop = iteration_dates(base_iteration.start)
 
     iteration = Iteration.objects.create(start=start, stop=stop)

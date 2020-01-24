@@ -75,3 +75,15 @@ class ReportCreateForm(ModelForm):
                         raise ValidationError(_('task is already exists in this iteration'))
                 data['task'] = task
         return data
+
+
+class IterationForm(ModelForm):
+    class Meta:
+        model = Iteration
+        fields = ['comment']
+        widgets = {
+            'comment': TextInput(attrs={
+                'class': 'form-control mb-2 mr-sm-2',
+                'placeholder': _('Comment'),
+            })
+        }
