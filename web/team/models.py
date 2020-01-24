@@ -3,7 +3,7 @@ from urllib.parse import urljoin
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
-from team.lib import iteration_dates
+from team.lib import iteration_start, iteration_stop
 
 
 # ----------- abstract models -----------
@@ -37,7 +37,7 @@ class NameModel(models.Model):
 # ----------- real models -----------
 
 class Tracker(CreatedUpdatedModel, NameModel):
-    url = models.URLField(_('url'))
+    url = models.URLField(_('url'), db_index=True)
 
 
 class Worker(CreatedUpdatedModel, NameModel):
@@ -65,8 +65,8 @@ class Task(CreatedUpdatedModel, CommentModel):
 
 
 class Iteration(CreatedUpdatedModel, CommentModel):
-    start = models.DateField(_('start'), default=lambda: iteration_dates()[0])
-    stop = models.DateField(_('stop'), default=lambda: iteration_dates()[1])
+    start = models.DateField(_('start'), default=iteration_start)
+    stop = models.DateField(_('stop'), default=iteration_stop)
 
     class Meta:
         ordering = ('-start',)
@@ -96,6 +96,7 @@ class Report(CreatedUpdatedModel, CommentModel):
 
     class Meta:
         ordering = ('iteration', 'worker', 'status')
+        unique_together = ('iteration', 'task')
 
     def __str__(self) -> str:
         return '{iteration} / {task} / {worker} / {status}'.format(

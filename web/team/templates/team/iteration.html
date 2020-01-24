@@ -3,29 +3,54 @@
 {% block title %}{% trans "Interation" %}{% endblock %}
 {% block content %}
   <h1 class="mt-5">{% trans "Interation" %} {{ iteration }}</h1>
+  {% if iteration.pk == last_iteration %}
+    <form class="form-inline"
+          action="{% url 'iteration_create' last_iteration %}"
+          method="post"
+          id="iteration_create">
+      {% csrf_token %}
+      <button type="submit" class="btn btn-primary mb-2">{% trans "Create Next" %}</button>
+    </form>
+  {% endif %}
   <hr>
   {% for worker, status_reports in worker_reports %}
-    <h3>{{ worker }}</h3>
+    <h3>
+      {{ worker }}
+    </h3>
     {% for status, reports in status_reports %}
       <h5>{{ status }}</h5>
-      {% for report in reports %}
-        <table class="table">
-          <tbody>
+      <table class="table">
+        <tbody>
+        {% for report in reports %}
           <tr>
-            <td><a href="{{ report.task.url }}" title="{{ report.task.number }}">{{ report.task.url }}</a></td>
+            <td><a href="{{ report.task.url }}" title="{{ report.task.number }}">{{ report.task.number }}</a></td>
             <td>{{ report.task.title }}</td>
             <td>{{ report.comment }}</td>
             <td>
-              <form action="{% url 'report_update' report.pk %}" method="post" id="report_{{ report.pk }}" class="form-inline">
-                    {% csrf_token %}
-                    {{ report.form }}
-                    <button type="submit" class="btn btn-primary my-1">{% trans 'Update' %}</button>
+              <form class="form-inline"
+                    action="{% url 'report_update' report.pk %}"
+                    method="post"
+                    id="report_{{ report.pk }}">
+                {% csrf_token %}
+                {{ report.form.comment }}
+                {{ report.form.status }}
+                <button type="submit" class="btn btn-primary mb-2">{% trans "Update" %}</button>
               </form>
             </td>
           </tr>
-          </tbody>
-        </table>
-      {% endfor %}
+        {% endfor %}
+        </tbody>
+      </table>
     {% endfor %}
+    <form class="form-inline"
+          action="{% url 'report_create' iteration.pk worker.pk %}"
+          method="post"
+          id="report_create">
+      {% csrf_token %}
+      {{ worker.form.number }}
+      {{ worker.form.title }}
+      {{ worker.form.comment }}
+      <button type="submit" class="btn btn-primary mb-2">{% trans "Create" %}</button>
+    </form>
   {% endfor %}
 {% endblock %}

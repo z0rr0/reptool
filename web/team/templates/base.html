@@ -30,6 +30,9 @@
           <li class="nav-item active">
             <a class="nav-link" href="/">{% trans "Home" %} <span class="sr-only">(current)</span></a>
           </li>
+           <li class="nav-item">
+            <a class="nav-link" href="{% url 'iterations' %}">{% trans "Iterations" %}</a>
+          </li>
           <li class="nav-item">
             <a class="nav-link" href="{% url 'about' %}">{% trans "About" %}</a>
           </li>
@@ -51,6 +54,14 @@
   <!-- Begin page content -->
   <main role="main" class="flex-shrink-0">
     <div class="container">
+
+      {% if messages %}
+        {% for message in messages %}
+          <div class="alert alert-{{ message.tags }}" role="alert">
+            {{ message }}
+          </div>
+        {% endfor %}
+      {% endif %}
       {% block content %}{% endblock %}
     </div>
   </main>

@@ -1,5 +1,5 @@
 from datetime import date, timedelta
-from typing import Tuple, Optional
+from typing import Optional, Tuple
 
 
 def iteration_dates(dt: Optional[date] = None) -> Tuple[date, date]:
@@ -18,3 +18,13 @@ def iteration_dates(dt: Optional[date] = None) -> Tuple[date, date]:
     _, offset = divmod(6 - dt.weekday() + 2, 7)
     start = dt + timedelta(days=offset or 7)
     return start, start + timedelta(days=6)
+
+
+def iteration_start(dt: Optional[date] = None) -> date:
+    start, _ = iteration_dates(dt)
+    return start
+
+
+def iteration_stop(dt: Optional[date] = None) -> date:
+    _, stop = iteration_dates(dt)
+    return stop

@@ -1,4 +1,5 @@
 import sys
+from django.contrib.messages import constants as messages
 """
 Django settings for web project.
 
@@ -135,6 +136,14 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 META_DESCRIPTION = 'Team work report tool'
 META_AUTHOR = 'z0rr0'
 OBJECTS_PER_PAGE = 20
+
+MESSAGE_TAGS = {
+    messages.DEBUG: 'debug',
+    messages.INFO: 'info',
+    messages.SUCCESS: 'success',
+    messages.WARNING: 'warning',
+    messages.ERROR: 'danger',
+}
 
 if 'test' not in sys.argv:
     # overwrite custom settings
