@@ -2,7 +2,7 @@
 
 from django.db import migrations, models
 import django.db.models.deletion
-import team.lib
+import team.models as lib
 
 
 class Migration(migrations.Migration):
@@ -19,12 +19,12 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='iteration',
             name='start',
-            field=models.DateField(default=team.lib.iteration_start, verbose_name='start'),
+            field=models.DateField(default=lib.iteration_start, verbose_name='start'),
         ),
         migrations.AlterField(
             model_name='iteration',
             name='stop',
-            field=models.DateField(default=team.lib.iteration_stop, verbose_name='stop'),
+            field=models.DateField(default=lib.iteration_stop, verbose_name='stop'),
         ),
         migrations.AlterField(
             model_name='report',
