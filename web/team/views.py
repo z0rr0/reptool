@@ -37,7 +37,7 @@ class Export:
             result.append((worker, worker_reports))
         return result
 
-    def render(self):
+    def render(self) -> str:
         reports = self.get_reports()
         return render_to_string('team/export.txt', {'result': reports})
 
@@ -128,8 +128,8 @@ class ReportUpdateView(PostUpdateView):
 
 
 def index(request):
-    i = Iteration.objects.first()
-    return IterationDetailView.as_view()(request, pk=i.pk)
+    iteration = Iteration.objects.first()
+    return IterationDetailView.as_view()(request, pk=iteration.pk)
 
 
 @require_POST

@@ -17,6 +17,7 @@ class WorkerAdmin(admin.ModelAdmin):
 class TaskAdmin(admin.ModelAdmin):
     list_display = ['number', 'title', 'url', 'comment']
     search_fields = ('number', 'title')
+    list_select_related = ['tracker']
     list_filter = ['created']
 
 
@@ -37,6 +38,7 @@ class ReportAdmin(admin.ModelAdmin):
     search_fields = ('task__number', 'task__title', 'worker__name')
     list_filter = ['iteration__start', 'created', 'status']
     actions = [make_done]
+    list_select_related = ['iteration', 'worker', 'task']
     list_per_page = 30
 
 
