@@ -1,0 +1,13 @@
+language: python
+
+python:
+  - "3.8"
+install:
+  - pip install -r requirements.txt
+script:
+  - python3.8 blog/manage.py test -v2 team.tests
+dist: bionic
+sudo: required
+branches:
+  only:
+    - master
