@@ -3,6 +3,11 @@
 {% block title %}{{ title }}{% endblock %}
 {% block content %}
   <h1 class="mt-5">{% trans "Interations" %}</h1>
+
+  {% if search %}
+    <p>{% trans "Search by keyword" %} <strong>{{ search }}</strong></p>
+  {% endif %}
+
   <table class="table table-striped">
     <thead class="thead-dark">
       <tr>

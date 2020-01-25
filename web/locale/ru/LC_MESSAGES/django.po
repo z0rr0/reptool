@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-01-25 15:34+0300\n"
-"PO-Revision-Date: 2020-01-25 15:33+0300\n"
+"POT-Creation-Date: 2020-01-25 19:31+0300\n"
+"PO-Revision-Date: 2020-01-25 19:32+0300\n"
 "Last-Translator: Alexander Zaitsev <me@axv.email>\n"
 "Language-Team: \n"
 "Language: ru\n"
@@ -25,7 +25,7 @@ msgid "Mark selected as done"
 msgstr "Отметить выбранные как сделанные"
 
 #: team/forms.py:17 team/forms.py:46 team/forms.py:87
-#: team/templates/team/iterations.html:11
+#: team/templates/team/iterations.html:16
 msgid "Comment"
 msgstr "Комментарий"
 
@@ -67,7 +67,7 @@ msgstr "комментарий"
 
 #: team/models.py:55
 msgid "name"
-msgstr "Название"
+msgstr "название"
 
 #: team/models.py:68
 msgid "url"
@@ -109,23 +109,19 @@ msgstr "Сделано"
 msgid "status"
 msgstr "статус"
 
-#: team/templates/base.html:31
-msgid "Home"
-msgstr "Домой"
-
-#: team/templates/base.html:34
+#: team/templates/base.html:32
 msgid "Iterations"
 msgstr "Итерации"
 
-#: team/templates/base.html:37 team/templates/base.html:72
+#: team/templates/base.html:36 team/templates/base.html:72
 msgid "About"
 msgstr "О проекте"
 
-#: team/templates/base.html:40
+#: team/templates/base.html:39
 msgid "Admin"
 msgstr "Админка"
 
-#: team/templates/base.html:47 team/templates/base.html:48
+#: team/templates/base.html:45 team/templates/base.html:48
 msgid "Search"
 msgstr "Найти"
 
@@ -165,30 +161,37 @@ msgstr "Добавить"
 msgid "Interations"
 msgstr "Итерации"
 
-#: team/templates/team/iterations.html:10
+#: team/templates/team/iterations.html:8
+msgid "Search by keyword"
+msgstr "Поиск по ключевому слову"
+
+#: team/templates/team/iterations.html:15
 msgid "Dates"
 msgstr "Даты"
 
-#: team/templates/team/iterations.html:12
+#: team/templates/team/iterations.html:17
 msgid "Created"
 msgstr "Создано"
 
-#: team/templates/team/iterations.html:19
+#: team/templates/team/iterations.html:24
 msgid "Show details"
 msgstr "Детали"
 
-#: team/views.py:122
+#: team/views.py:148
 msgid "report #{} was successfully created"
 msgstr "отчет #{} был успешно создан"
 
-#: team/views.py:126
+#: team/views.py:152
 msgid "report can not be created: {}"
 msgstr "отчет не может быть создан: {}"
 
-#: team/views.py:136
+#: team/views.py:162
 msgid "this iteration is not the latest"
 msgstr "эта итерация не последняя"
 
-#: team/views.py:156
+#: team/views.py:182
 msgid "iteration #{} was created with {} new reports"
 msgstr "итерация #{} была создана с {} новыми отчетами"
+
+#~ msgid "Home"
+#~ msgstr "Домой"

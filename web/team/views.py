@@ -3,7 +3,7 @@ from typing import Iterable, List, Tuple
 
 from django.conf import settings
 from django.contrib import messages
-from django.db import transaction
+from django.db import models, transaction
 from django.http import HttpResponse, HttpResponseNotAllowed
 from django.shortcuts import get_object_or_404, redirect, reverse
 from django.template.loader import render_to_string
@@ -47,6 +47,32 @@ class IterationListView(ListView):
     context_object_name = 'iterations'
     paginate_by = settings.OBJECTS_PER_PAGE
     template_name = 'team/iterations.html'
+
+
+class IterationSearchListView(IterationListView):
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context_data = super().get_context_data(object_list=object_list, **kwargs)
+        context_data['search'] = self.request.GET.get('search')
+        return context_data
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        search = self.request.GET.get('search')
+        if search is not None:
+            reports = Report.objects.filter(
+                models.Q(comment__icontains=search) |
+                models.Q(task__number__icontains=search) |
+                models.Q(task__title__icontains=search) |
+                models.Q(iteration__comment__icontains=search)
+            )
+            reports = reports.filter(iteration__in=queryset)
+            iteration_ids = set(reports.values_list('iteration_id', flat=True))
+            if iteration_ids:
+                queryset = queryset.filter(id__in=iteration_ids)
+            else:
+                queryset = Iteration.objects.none()
+        return queryset
 
 
 class IterationDetailView(DetailView):
