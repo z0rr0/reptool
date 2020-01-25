@@ -4,8 +4,8 @@ from typing import Iterable, List, Tuple
 from django.conf import settings
 from django.contrib import messages
 from django.db import transaction
-from django.http import HttpResponse
-from django.shortcuts import get_object_or_404, redirect, reverse
+from django.http import HttpResponse, HttpResponseNotAllowed
+from django.shortcuts import get_object_or_404, redirect, reverse, Http404
 from django.template.loader import render_to_string
 from django.utils.translation import gettext_lazy as _
 from django.views.decorators.http import require_GET, require_POST
@@ -93,6 +93,9 @@ class ReportUpdateView(UpdateView):
 
     def get_success_url(self):
         return reverse('iteration', kwargs={'pk': self.object.iteration_id})
+
+    def get(self, request, *args, **kwargs):
+        return HttpResponseNotAllowed('failed request')
 
 
 class ReportCreateView(CreateView):
