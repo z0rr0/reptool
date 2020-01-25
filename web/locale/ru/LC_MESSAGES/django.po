@@ -1,0 +1,194 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# Alexander Zaytsev <me@axv.email>
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-01-25 15:34+0300\n"
+"PO-Revision-Date: 2020-01-25 15:33+0300\n"
+"Last-Translator: Alexander Zaitsev <me@axv.email>\n"
+"Language-Team: \n"
+"Language: ru\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n"
+"%100>=11 && n%100<=14)? 2 : 3);\n"
+"X-Generator: Poedit 2.2.4\n"
+
+#: team/admin.py:32
+msgid "Mark selected as done"
+msgstr "Отметить выбранные как сделанные"
+
+#: team/forms.py:17 team/forms.py:46 team/forms.py:87
+#: team/templates/team/iterations.html:11
+msgid "Comment"
+msgstr "Комментарий"
+
+#: team/forms.py:24
+msgid "Task number"
+msgstr "Номер задачи"
+
+#: team/forms.py:28
+msgid "Task URL"
+msgstr "URL задачи"
+
+#: team/forms.py:32 team/forms.py:36
+msgid "Task title"
+msgstr "Заголовок задачи"
+
+#: team/forms.py:60
+msgid "failed task URL"
+msgstr "неверный URL задачи"
+
+#: team/forms.py:64
+msgid "can not find tracker"
+msgstr "невозможно определить трекер"
+
+#: team/forms.py:75
+msgid "task is already exists in this iteration"
+msgstr "задачи уже существует в этой итерации"
+
+#: team/models.py:40
+msgid "created"
+msgstr "создано"
+
+#: team/models.py:41
+msgid "updated"
+msgstr "обновлено"
+
+#: team/models.py:48
+msgid "comment"
+msgstr "комментарий"
+
+#: team/models.py:55
+msgid "name"
+msgstr "Название"
+
+#: team/models.py:68
+msgid "url"
+msgstr "url"
+
+#: team/models.py:72
+msgid "email"
+msgstr "email"
+
+#: team/models.py:77
+msgid "number"
+msgstr "номер"
+
+#: team/models.py:78
+msgid "title"
+msgstr "заголовок"
+
+#: team/models.py:96
+msgid "start"
+msgstr "начало"
+
+#: team/models.py:97
+msgid "stop"
+msgstr "завершение"
+
+#: team/models.py:119
+msgid "Planned"
+msgstr "Запланировано"
+
+#: team/models.py:120
+msgid "In progress"
+msgstr "В работе"
+
+#: team/models.py:121
+msgid "Done"
+msgstr "Сделано"
+
+#: team/models.py:127
+msgid "status"
+msgstr "статус"
+
+#: team/templates/base.html:31
+msgid "Home"
+msgstr "Домой"
+
+#: team/templates/base.html:34
+msgid "Iterations"
+msgstr "Итерации"
+
+#: team/templates/base.html:37 team/templates/base.html:72
+msgid "About"
+msgstr "О проекте"
+
+#: team/templates/base.html:40
+msgid "Admin"
+msgstr "Админка"
+
+#: team/templates/base.html:47 team/templates/base.html:48
+msgid "Search"
+msgstr "Найти"
+
+#: team/templates/pagination.html:6 team/templates/pagination.html:10
+msgid "Previous"
+msgstr "Предыдущий"
+
+#: team/templates/pagination.html:22 team/templates/pagination.html:26
+msgid "Next"
+msgstr "Следующий"
+
+#: team/templates/team/export.txt:1
+msgid "Team tasks"
+msgstr "Задачи команды"
+
+#: team/templates/team/iteration.html:3 team/templates/team/iteration.html:6
+msgid "Interation"
+msgstr "Итерация"
+
+#: team/templates/team/iteration.html:7
+msgid "Export"
+msgstr "Экспорт"
+
+#: team/templates/team/iteration.html:16
+msgid "Create Next"
+msgstr "Создать следующую"
+
+#: team/templates/team/iteration.html:51
+msgid "Update"
+msgstr "Обновить"
+
+#: team/templates/team/iteration.html:66
+msgid "Add"
+msgstr "Добавить"
+
+#: team/templates/team/iterations.html:5
+msgid "Interations"
+msgstr "Итерации"
+
+#: team/templates/team/iterations.html:10
+msgid "Dates"
+msgstr "Даты"
+
+#: team/templates/team/iterations.html:12
+msgid "Created"
+msgstr "Создано"
+
+#: team/templates/team/iterations.html:19
+msgid "Show details"
+msgstr "Детали"
+
+#: team/views.py:122
+msgid "report #{} was successfully created"
+msgstr "отчет #{} был успешно создан"
+
+#: team/views.py:126
+msgid "report can not be created: {}"
+msgstr "отчет не может быть создан: {}"
+
+#: team/views.py:136
+msgid "this iteration is not the latest"
+msgstr "эта итерация не последняя"
+
+#: team/views.py:156
+msgid "iteration #{} was created with {} new reports"
+msgstr "итерация #{} была создана с {} новыми отчетами"
