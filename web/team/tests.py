@@ -1,3 +1,5 @@
+from datetime import timedelta
+
 from django.conf import settings
 from django.contrib.flatpages.models import FlatPage
 from django.contrib.sites.models import Site
@@ -96,16 +98,62 @@ class IterationTestCase(TeamBaseTestCase):
         self.assertInHTML(str(self.iteration), resp.content.decode())
 
     def test_create(self):
-        pass
+        url = '/iterations/{}/create/'.format(self.iteration.id)
+        resp = self.client.get(url)
+        self.assertEqual(resp.status_code, 405)
+
+        iteration_ids = set(Iteration.objects.values_list('id', flat=True))
+        resp = self.client.post(url)
+        self.assertEqual(resp.status_code, 302)
+
+        iteration = Iteration.objects.first()
+        self.assertIsNotNone(iteration)
+        self.assertNotIn(iteration.id, iteration_ids)
+        self.assertEqual(iteration.start, self.iteration.stop + timedelta(days=1))
+
+        report_ids = set(self.iteration.reports.exclude(status=Report.DONE).values_list('task_id', flat=True))
+        migrated_reports = tuple(iteration.reports.values_list('task_id', 'status'))
+
+        self.assertEqual(report_ids, {task_id for task_id, _ in migrated_reports})
+        self.assertTrue(all(status == Report.PLANNED for _, status in migrated_reports))
 
     def test_failed_create(self):
-        pass
+        url = '/iterations/{}/create/'.format(self.iteration.id)
+        self.assertEqual(Iteration.objects.count(), 1)
+
+        resp = self.client.post(url)
+        self.assertEqual(resp.status_code, 302)
+        self.assertEqual(Iteration.objects.count(), 2)
+
+        # base iteration is not the latest
+        resp = self.client.post(url)
+        self.assertEqual(Iteration.objects.count(), 2)
 
     def test_update(self):
-        pass
+        url = '/iterations/{}/update/'.format(self.iteration.id)
+        resp = self.client.get(url)
+        self.assertEqual(resp.status_code, 405)
+
+        comment = self.iteration.comment + '_add comment'
+        resp = self.client.post(url, data={'comment': comment})
+        self.assertEqual(resp.status_code, 302)
+
+        i = Iteration.objects.get(id=self.iteration.id)
+        self.assertEqual(i.comment, comment)
 
     def test_export(self):
-        pass
+        url = '/iterations/{}/export/'.format(self.iteration.id)
+        resp = self.client.post(url)
+        self.assertEqual(resp.status_code, 405)
+
+        resp = self.client.get(url)
+        self.assertEqual(resp.status_code, 200)
+        content = resp.content.decode()
+
+        for r in self.iteration.reports.select_related('worker', 'task__tracker'):
+            self.assertIn(r.worker.name, content)
+            task = '{} {}'.format(r.task.url, r.task.title)
+            self.assertIn(task, content)
 
 
 class FlatPagesTestCase(TestCase):
