@@ -98,6 +98,9 @@ class IterationTestCase(TeamBaseTestCase):
     def test_create(self):
         pass
 
+    def test_failed_create(self):
+        pass
+
     def test_update(self):
         pass
 

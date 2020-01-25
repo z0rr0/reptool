@@ -5,11 +5,11 @@ from django.conf import settings
 from django.contrib import messages
 from django.db import transaction
 from django.http import HttpResponse, HttpResponseNotAllowed
-from django.shortcuts import get_object_or_404, redirect, reverse, Http404
+from django.shortcuts import get_object_or_404, redirect, reverse
 from django.template.loader import render_to_string
 from django.utils.translation import gettext_lazy as _
 from django.views.decorators.http import require_GET, require_POST
-from django.views.generic import CreateView, DetailView, ListView, UpdateView
+from django.views.generic import DetailView, ListView, UpdateView
 
 from team.forms import IterationForm, ReportCreateForm, ReportForm
 from team.models import Iteration, Report, Worker, iteration_dates
@@ -79,7 +79,13 @@ class IterationDetailView(DetailView):
         return data
 
 
-class IterationUpdateView(UpdateView):
+class PostUpdateView(UpdateView):
+
+    def get(self, request, *args, **kwargs):
+        return HttpResponseNotAllowed('failed request')
+
+
+class IterationUpdateView(PostUpdateView):
     model = Iteration
     form_class = IterationForm
 
@@ -87,20 +93,12 @@ class IterationUpdateView(UpdateView):
         return reverse('iteration', kwargs={'pk': self.object.pk})
 
 
-class ReportUpdateView(UpdateView):
+class ReportUpdateView(PostUpdateView):
     model = Report
     form_class = ReportForm
 
     def get_success_url(self):
         return reverse('iteration', kwargs={'pk': self.object.iteration_id})
-
-    def get(self, request, *args, **kwargs):
-        return HttpResponseNotAllowed('failed request')
-
-
-class ReportCreateView(CreateView):
-    model = Report
-    form_class = ReportForm
 
 
 def index(request):
