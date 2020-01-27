@@ -1,5 +1,6 @@
 main > .container {
   padding: 60px 15px 0;
+  max-width: 1340px;
 }
 
 .footer {

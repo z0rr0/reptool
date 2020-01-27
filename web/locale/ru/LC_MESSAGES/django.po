@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-01-25 19:31+0300\n"
+"POT-Creation-Date: 2020-01-27 12:54+0300\n"
 "PO-Revision-Date: 2020-01-25 19:32+0300\n"
 "Last-Translator: Alexander Zaitsev <me@axv.email>\n"
 "Language-Team: \n"
@@ -20,7 +20,7 @@ msgstr ""
 "%100>=11 && n%100<=14)? 2 : 3);\n"
 "X-Generator: Poedit 2.2.4\n"
 
-#: team/admin.py:32
+#: team/admin.py:33
 msgid "Mark selected as done"
 msgstr "Отметить выбранные как сделанные"
 
