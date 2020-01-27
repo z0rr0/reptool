@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-01-27 12:54+0300\n"
-"PO-Revision-Date: 2020-01-25 19:32+0300\n"
+"POT-Creation-Date: 2020-01-27 16:41+0300\n"
+"PO-Revision-Date: 2020-01-27 16:41+0300\n"
 "Last-Translator: Alexander Zaitsev <me@axv.email>\n"
 "Language-Team: \n"
 "Language: ru\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
 "%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n"
 "%100>=11 && n%100<=14)? 2 : 3);\n"
-"X-Generator: Poedit 2.2.4\n"
+"X-Generator: Poedit 2.0.6\n"
 
 #: team/admin.py:33
 msgid "Mark selected as done"
@@ -113,7 +113,7 @@ msgstr "статус"
 msgid "Iterations"
 msgstr "Итерации"
 
-#: team/templates/base.html:36 team/templates/base.html:72
+#: team/templates/base.html:36 team/templates/base.html:71
 msgid "About"
 msgstr "О проекте"
 
@@ -145,15 +145,23 @@ msgstr "Итерация"
 msgid "Export"
 msgstr "Экспорт"
 
-#: team/templates/team/iteration.html:16
+#: team/templates/team/iteration.html:8
+msgid "Planned export"
+msgstr "Запланированный экспорт"
+
+#: team/templates/team/iteration.html:8
+msgid "export"
+msgstr "экспорт"
+
+#: team/templates/team/iteration.html:17
 msgid "Create Next"
 msgstr "Создать следующую"
 
-#: team/templates/team/iteration.html:51
+#: team/templates/team/iteration.html:52
 msgid "Update"
 msgstr "Обновить"
 
-#: team/templates/team/iteration.html:66
+#: team/templates/team/iteration.html:67
 msgid "Add"
 msgstr "Добавить"
 
@@ -177,19 +185,19 @@ msgstr "Создано"
 msgid "Show details"
 msgstr "Детали"
 
-#: team/views.py:148
+#: team/views.py:181
 msgid "report #{} was successfully created"
 msgstr "отчет #{} был успешно создан"
 
-#: team/views.py:152
+#: team/views.py:185
 msgid "report can not be created: {}"
 msgstr "отчет не может быть создан: {}"
 
-#: team/views.py:162
+#: team/views.py:195
 msgid "this iteration is not the latest"
 msgstr "эта итерация не последняя"
 
-#: team/views.py:182
+#: team/views.py:215
 msgid "iteration #{} was created with {} new reports"
 msgstr "итерация #{} была создана с {} новыми отчетами"
 

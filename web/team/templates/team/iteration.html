@@ -5,6 +5,7 @@
   <h1 class="mt-5">
     {% trans "Interation" %}
     <a href="{% url 'iteration_export' iteration.pk %}" title="{% trans 'Export' %}">{{ iteration }}</a>
+    <a href="{% url 'iteration_export_planned' iteration.pk %}" title="{% trans 'Planned export' %}" class="btn btn-secondary">{% trans "exportq" %}</a>
   </h1>
   {% if iteration.is_last %}
     <div>

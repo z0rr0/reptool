@@ -12,18 +12,28 @@ from django.views.decorators.http import require_GET, require_POST
 from django.views.generic import DetailView, ListView, UpdateView
 
 from team.forms import IterationForm, ReportCreateForm, ReportForm
-from team.models import Iteration, Report, Worker, iteration_dates
+from team.models import Iteration, iteration_dates, Report, Worker
 
 
 class Export:
     """Export processor"""
 
-    def __init__(self, iteration: Iteration):
+    def __init__(self, iteration: Iteration, planned: bool = False):
+        """
+        :param iteration: iteration for export
+        :param planned: move not done reports to planned
+        """
         self.iteration = iteration
+        self.planned = planned
+        self.status_map = dict(Report.STATUS_CHOICES)
 
-    def get_reports(self) -> List[Tuple[Worker, List[Tuple[str, Tuple[Report]]]]]:
+    def _show_comment(self, status: str) -> bool:
+        if not self.planned:
+            return True
+        return status != Report.PLANNED
+
+    def get_reports(self) -> List[Tuple[Worker, List[Tuple[str, bool, Tuple[Report]]]]]:
         result = []
-        status_map = dict(Report.STATUS_CHOICES)
         reports = self.iteration.reports.select_related(
             'worker', 'task__tracker'
         ).order_by(
@@ -31,15 +41,38 @@ class Export:
         )
         for worker, items in groupby(reports, lambda x: x.worker):
             worker_reports = [
-                (status_map[status], tuple(task_items))
+                (self.status_map[status], self._show_comment(status), tuple(task_items))
                 for status, task_items in groupby(items, lambda y: y.status)
             ]
             result.append((worker, worker_reports))
         return result
 
+    def get_planned_reports(self) -> List[Tuple[Worker, List[Tuple[str, bool, List[Report]]]]]:
+        """It returns in_progress reports duplicated in planned section"""
+        result = []
+        reports = self.iteration.reports.select_related(
+            'worker', 'task__tracker'
+        ).order_by(
+            'worker', 'status', 'task'
+        )
+        for worker, items in groupby(reports, lambda x: x.worker):
+            worker_reports = {
+                status: list(task_items)
+                for status, task_items in groupby(items, lambda y: y.status)
+            }
+            in_progress = worker_reports.get(Report.IN_PROGRESS, [])
+            worker_reports.setdefault(Report.PLANNED, []).extend(in_progress)
+
+            reports = [
+                (self.status_map[status], self._show_comment(status), items)
+                for status, items in sorted(worker_reports.items(), key=lambda x: x[0])
+            ]
+            result.append((worker, reports))
+        return result
+
     def render(self) -> str:
-        reports = self.get_reports()
-        return render_to_string('team/export.txt', {'result': reports})
+        reports = self.get_planned_reports() if self.planned else self.get_reports()
+        return render_to_string('team/export.txt', {'result': reports, 'planned': self.planned})
 
 
 class IterationListView(ListView):
@@ -190,6 +223,18 @@ def iteration_export(request, pk: int):
     exporter = Export(iteration)
     response = HttpResponse(exporter.render(), content_type='text/plain')
     response['Content-Disposition'] = 'attachment; filename="iteration_{}_{}.txt"'.format(
+        iteration.start.strftime('%Y%m%d'),
+        iteration.stop.strftime('%Y%m%d'),
+    )
+    return response
+
+
+@require_GET
+def iteration_export_planned(request, pk: int):
+    iteration = get_object_or_404(Iteration, pk=pk)
+    exporter = Export(iteration, planned=True)
+    response = HttpResponse(exporter.render(), content_type='text/plain')
+    response['Content-Disposition'] = 'attachment; filename="iteration_planned_{}_{}.txt"'.format(
         iteration.start.strftime('%Y%m%d'),
         iteration.stop.strftime('%Y%m%d'),
     )

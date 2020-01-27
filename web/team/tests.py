@@ -126,7 +126,7 @@ class IterationTestCase(TeamBaseTestCase):
         self.assertEqual(Iteration.objects.count(), 2)
 
         # base iteration is not the latest
-        resp = self.client.post(url)
+        self.client.post(url)
         self.assertEqual(Iteration.objects.count(), 2)
 
     def test_update(self):
@@ -141,8 +141,7 @@ class IterationTestCase(TeamBaseTestCase):
         i = Iteration.objects.get(id=self.iteration.id)
         self.assertEqual(i.comment, comment)
 
-    def test_export(self):
-        url = '/iterations/{}/export/'.format(self.iteration.id)
+    def _export(self, url: str) -> None:
         resp = self.client.post(url)
         self.assertEqual(resp.status_code, 405)
 
@@ -154,6 +153,14 @@ class IterationTestCase(TeamBaseTestCase):
             self.assertIn(r.worker.name, content)
             task = '{} {}'.format(r.task.url, r.task.title)
             self.assertIn(task, content)
+
+    def test_export(self):
+        url = '/iterations/{}/export/'.format(self.iteration.id)
+        self._export(url)
+
+    def test_export_planned(self):
+        url = '/iterations/{}/export/planned/'.format(self.iteration.id)
+        self._export(url)
 
 
 class FlatPagesTestCase(TestCase):

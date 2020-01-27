@@ -1,8 +1,8 @@
 {% load i18n %}{% trans "Team tasks" %}
 {% for worker, status_reports in result %}
 ------------
-{{ worker }}{% for status, reports in status_reports %}
+{{ worker }}{% for status, show_comment, reports in status_reports %}
 {{ status }}{% for report in reports %}
-{{ report.task.url }} {{ report.task.title }}{%if report.comment %}
+{{ report.task.url }} {{ report.task.title }}{%if show_comment and report.comment %}
 {{ report.comment }}{% endif %}{% endfor %}
 {% endfor %}{% endfor %}

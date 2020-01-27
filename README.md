@@ -5,3 +5,11 @@
 [![license](https://img.shields.io/github/license/z0rr0/reptool.svg)](https://github.com/z0rr0/reptool/blob/master/LICENSE)
 
 Team work report tool.
+
+
+###  Translation
+
+```
+python manage.py makemessages -l ru
+python manage.py compilemessages -v2
+```
