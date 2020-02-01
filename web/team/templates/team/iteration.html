@@ -48,6 +48,7 @@
                   id="report_{{ report.pk }}">
               {% csrf_token %}
               {{ report.form.comment }}
+              {{ report.form.delegation }}
               {{ report.form.status }}
               <button type="submit" class="btn btn-dark mb-2">{% trans "Update" %}</button>
             </form>
@@ -63,6 +64,7 @@
       {% csrf_token %}
       {{ worker.form.number }}
       {{ worker.form.title }}
+      {{ worker.form.delegation }}
       {{ worker.form.comment }}
       <button type="submit" class="btn btn-primary mb-2">{% trans "Add" %}</button>
     </form>

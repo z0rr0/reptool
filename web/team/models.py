@@ -73,7 +73,7 @@ class Worker(CreatedUpdatedModel, NameModel):
 
 
 class Task(CreatedUpdatedModel, CommentModel):
-    tracker = models.ForeignKey(Tracker, on_delete=models.CASCADE)
+    tracker = models.ForeignKey(Tracker, verbose_name=_('tracker'), on_delete=models.CASCADE)
     number = models.CharField(_('number'), max_length=255, unique=True)
     title = models.CharField(_('title'), max_length=4096, db_index=True)
 
@@ -120,11 +120,28 @@ class Report(CreatedUpdatedModel, CommentModel):
         (IN_PROGRESS, _('In progress')),
         (DONE, _('Done')),
     )
+    # delegation poker status
+    DELEGATION_CHOICES = (
+        ('tell', _('Tell')),  # I will tell them
+        ('sell', _('Sell')),  # I will try and sell to them
+        ('consult', _('Consult')),  # I will consult and then decide
+        ('agree', _('Agree')),  # We will agree together
+        ('advise', _('Advise')),  # We will advice but they decide
+        ('inquire', _('Inquire')),  # I will inquire after they decide
+        ('delegate', _('Delegate')),  # I will fully delegate
+    )
 
-    iteration = models.ForeignKey(Iteration, on_delete=models.CASCADE, related_name='reports')
-    worker = models.ForeignKey(Worker, on_delete=models.CASCADE)
-    task = models.ForeignKey(Task, on_delete=models.CASCADE)
+    iteration = models.ForeignKey(
+        Iteration, verbose_name=_('iteration'),
+        on_delete=models.CASCADE, related_name='reports',
+    )
+    worker = models.ForeignKey(Worker, verbose_name=_('worker'), on_delete=models.CASCADE)
+    task = models.ForeignKey(Task, verbose_name=_('task'), on_delete=models.CASCADE)
     status = models.CharField(_('status'), max_length=32, choices=STATUS_CHOICES, default=PLANNED, db_index=True)
+    delegation = models.CharField(
+        _('delegation'), max_length=32, choices=DELEGATION_CHOICES,
+        default=DELEGATION_CHOICES[3][0],  # agree
+    )
 
     class Meta:
         ordering = ('iteration', 'worker', 'status')
