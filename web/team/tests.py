@@ -49,19 +49,26 @@ class ReportTestCase(TeamBaseTestCase):
         report = Report.objects.filter(status=Report.PLANNED).first()
         comment = report.comment + '_add comment'
         status = Report.IN_PROGRESS
+        delegation = Report.DELEGATION_CHOICES[0][0]  # tell
         url = '/reports/{}/update/'.format(report.id)
+
+        self.assertNotEqual(comment, report.comment)
+        self.assertNotEqual(status, report.status)
+        self.assertNotEqual(delegation, report.delegation)
 
         resp = self.client.get(url)
         self.assertEqual(resp.status_code, 405)
 
-        resp = self.client.post(url, data={'comment': comment, 'status': status})
+        resp = self.client.post(url, data={'comment': comment, 'status': status, 'delegation': delegation})
         self.assertEqual(resp.status_code, 302)
 
         report.refresh_from_db(fields=('comment', 'status'))
         self.assertEqual(report.comment, comment)
         self.assertEqual(report.status, status)
+        self.assertNotEqual(delegation, report.delegation)
 
     def test_create(self):
+        delegation = Report.DELEGATION_CHOICES[0][0]  # tell
         report_ids = set(Report.objects.values_list('id', flat=True))
         worker = Worker.objects.first()
         url = '/reports/create/{iteration_id}/{worker_id}/'.format(
@@ -75,6 +82,7 @@ class ReportTestCase(TeamBaseTestCase):
             'number': 'https://jira.test.com/browse/XYZ-007',
             'title': 'This is test comment',
             'comment': 'test comment',
+            'delegation': delegation,
         }
         resp = self.client.post(url, data=data)
         self.assertEqual(resp.status_code, 302)
@@ -83,6 +91,7 @@ class ReportTestCase(TeamBaseTestCase):
         self.assertIsNotNone(r)
         self.assertNotIn(r.id, report_ids)
         self.assertEqual(r.status, Report.PLANNED)
+        self.assertEqual(r.delegation, delegation)
 
 
 class IterationTestCase(TeamBaseTestCase):
