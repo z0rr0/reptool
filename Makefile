@@ -1,6 +1,6 @@
 NAME=reptool
 HOST=127.0.0.1
-PORT=8000
+PORT=8001
 ADDR=reptool.org
 MANAGE=web/manage.py
 PID=/tmp/.$(NAME).pid
