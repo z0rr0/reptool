@@ -42,13 +42,16 @@ class ReportCreateForm(ModelForm):
 
     class Meta:
         model = Report
-        fields = ['comment', 'delegation']
+        fields = ['comment', 'delegation', 'status']
         widgets = {
             'comment': TextInput(attrs={
                 'class': 'form-control mb-2 mr-sm-2',
                 'placeholder': _('Comment'),
             }),
             'delegation': Select(attrs={
+                'class': 'form-control my-1 mr-sm-2'
+            }),
+            'status': Select(attrs={
                 'class': 'form-control my-1 mr-sm-2'
             }),
         }
