@@ -83,6 +83,7 @@ class ReportTestCase(TeamBaseTestCase):
             'title': 'This is test comment',
             'comment': 'test comment',
             'delegation': delegation,
+            'status': Report.DONE,
         }
         resp = self.client.post(url, data=data)
         self.assertEqual(resp.status_code, 302)
@@ -90,7 +91,7 @@ class ReportTestCase(TeamBaseTestCase):
         r = Report.objects.filter(worker=worker).order_by('id').last()
         self.assertIsNotNone(r)
         self.assertNotIn(r.id, report_ids)
-        self.assertEqual(r.status, Report.PLANNED)
+        self.assertEqual(r.status, Report.DONE)
         self.assertEqual(r.delegation, delegation)
 
 
