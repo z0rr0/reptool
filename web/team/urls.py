@@ -10,6 +10,7 @@ from team.views import (
     IterationSearchListView,
     IterationUpdateView,
     report_create,
+    report_delete,
     ReportUpdateView,
 )
 
@@ -23,5 +24,6 @@ urlpatterns = [
     path('iterations/<int:pk>/export/', iteration_export, name='iteration_export'),
     path('iterations/<int:pk>/export/planned/', iteration_export_planned, name='iteration_export_planned'),
     path('reports/<int:pk>/update/', ReportUpdateView.as_view(), name='report_update'),
+    path('reports/<int:pk>/delete/', report_delete, name='report_delete'),
     path('reports/create/<int:iteration_id>/<int:worker_id>/', report_create, name='report_create'),
 ]

@@ -3,6 +3,7 @@ from typing import Optional, Tuple
 from urllib.parse import urljoin
 
 from django.db import models
+from django.shortcuts import reverse
 from django.utils.translation import gettext_lazy as _
 
 
@@ -166,3 +167,8 @@ class Report(CreatedUpdatedModel, CommentModel):
     @property
     def is_planned(self):
         return self.status == self.PLANNED
+
+    @property
+    def anchor_url(self) -> str:
+        url = reverse('iteration', kwargs={'pk': self.iteration_id})
+        return f'{url}#worker_{self.worker_id}'

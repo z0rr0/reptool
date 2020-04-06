@@ -157,7 +157,7 @@ class ReportUpdateView(PostUpdateView):
     form_class = ReportForm
 
     def get_success_url(self):
-        return reverse('iteration', kwargs={'pk': self.object.iteration_id})
+        return self.object.anchor_url
 
 
 def index(request):
@@ -180,11 +180,24 @@ def report_create(request, iteration_id: int, worker_id: int):
         report.save()
         msg = _('report #{} was successfully created')
         messages.success(request, msg.format(report.id))
+        url = report.anchor_url
     else:
         msgs = [e for errors in form.errors.values() for e in errors]
         msg = _('report can not be created: {}')
         messages.error(request, msg.format(', '.join(msgs)))
-    return redirect('iteration', iteration_id)
+        url = reverse('iteration', kwargs={'pk': iteration.pk})
+    return redirect(url)
+
+
+@require_POST
+@transaction.atomic()
+def report_delete(request, pk: int):
+    report = get_object_or_404(Report, pk=pk)
+    url = report.anchor_url
+    msg = _('report #{} was successfully deleted')
+    report.delete()
+    messages.success(request, msg.format(pk))
+    return redirect(url)
 
 
 @require_POST

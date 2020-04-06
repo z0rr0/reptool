@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-02-01 15:57+0300\n"
-"PO-Revision-Date: 2020-02-01 15:58+0300\n"
+"POT-Creation-Date: 2020-04-06 18:55+0300\n"
+"PO-Revision-Date: 2020-04-06 18:56+0300\n"
 "Last-Translator: Alexander Zaitsev <me@axv.email>\n"
 "Language-Team: \n"
 "Language: ru\n"
@@ -18,142 +18,142 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
 "%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n"
 "%100>=11 && n%100<=14)? 2 : 3);\n"
-"X-Generator: Poedit 2.2.4\n"
+"X-Generator: Poedit 2.0.6\n"
 
 #: team/admin.py:33
 msgid "Mark selected as done"
 msgstr "Отметить выбранные как сделанные"
 
-#: team/forms.py:17 team/forms.py:46 team/forms.py:87
+#: team/forms.py:17 team/forms.py:49 team/forms.py:96
 #: team/templates/team/iterations.html:16
 msgid "Comment"
 msgstr "Комментарий"
 
-#: team/forms.py:24
+#: team/forms.py:27
 msgid "Task number"
 msgstr "Номер задачи"
 
-#: team/forms.py:28
+#: team/forms.py:31
 msgid "Task URL"
 msgstr "URL задачи"
 
-#: team/forms.py:32 team/forms.py:36
+#: team/forms.py:35 team/forms.py:39
 msgid "Task title"
 msgstr "Заголовок задачи"
 
-#: team/forms.py:60
+#: team/forms.py:69
 msgid "failed task URL"
 msgstr "неверный URL задачи"
 
-#: team/forms.py:64
+#: team/forms.py:73
 msgid "can not find tracker"
 msgstr "невозможно определить трекер"
 
-#: team/forms.py:75
+#: team/forms.py:84
 msgid "task is already exists in this iteration"
 msgstr "задачи уже существует в этой итерации"
 
-#: team/models.py:40
+#: team/models.py:41
 msgid "created"
 msgstr "создано"
 
-#: team/models.py:41
+#: team/models.py:42
 msgid "updated"
 msgstr "обновлено"
 
-#: team/models.py:48
+#: team/models.py:49
 msgid "comment"
 msgstr "комментарий"
 
-#: team/models.py:55
+#: team/models.py:56
 msgid "name"
 msgstr "название"
 
-#: team/models.py:68
+#: team/models.py:69
 msgid "url"
 msgstr "url"
 
-#: team/models.py:72
+#: team/models.py:73
 msgid "email"
 msgstr "email"
 
-#: team/models.py:76
+#: team/models.py:77
 msgid "tracker"
 msgstr "трекер"
 
-#: team/models.py:77
+#: team/models.py:78
 msgid "number"
 msgstr "номер"
 
-#: team/models.py:78
+#: team/models.py:79
 msgid "title"
 msgstr "заголовок"
 
-#: team/models.py:96
+#: team/models.py:97
 msgid "start"
 msgstr "начало"
 
-#: team/models.py:97
+#: team/models.py:98
 msgid "stop"
 msgstr "завершение"
 
-#: team/models.py:119
+#: team/models.py:120
 msgid "Planned"
 msgstr "Запланировано"
 
-#: team/models.py:120
+#: team/models.py:121
 msgid "In progress"
 msgstr "В работе"
 
-#: team/models.py:121
+#: team/models.py:122
 msgid "Done"
 msgstr "Сделано"
 
-#: team/models.py:125
+#: team/models.py:126
 msgid "Tell"
 msgstr "Сообщать"
 
-#: team/models.py:126
+#: team/models.py:127
 msgid "Sell"
 msgstr "Продавать"
 
-#: team/models.py:127
+#: team/models.py:128
 msgid "Consult"
 msgstr "Советоваться"
 
-#: team/models.py:128
+#: team/models.py:129
 msgid "Agree"
 msgstr "Договариваться"
 
-#: team/models.py:129
+#: team/models.py:130
 msgid "Advise"
 msgstr "Предлагать"
 
-#: team/models.py:130
+#: team/models.py:131
 msgid "Inquire"
 msgstr "Спрашивать"
 
-#: team/models.py:131
+#: team/models.py:132
 msgid "Delegate"
 msgstr "Делегировать"
 
-#: team/models.py:135
+#: team/models.py:136
 msgid "iteration"
 msgstr "итерация"
 
-#: team/models.py:138
+#: team/models.py:139
 msgid "worker"
 msgstr "сотрудник"
 
-#: team/models.py:139
+#: team/models.py:140
 msgid "task"
 msgstr "задача"
 
-#: team/models.py:140
+#: team/models.py:141
 msgid "status"
 msgstr "статус"
 
-#: team/models.py:142
+#: team/models.py:143
 msgid "delegation"
 msgstr "делегирование"
 
@@ -197,19 +197,23 @@ msgstr "Экспорт"
 msgid "Planned export"
 msgstr "Запланированный экспорт"
 
-#: team/templates/team/iteration.html:8
+#: team/templates/team/iteration.html:9
 msgid "export"
 msgstr "экспорт"
 
-#: team/templates/team/iteration.html:17
+#: team/templates/team/iteration.html:18
 msgid "Create Next"
 msgstr "Создать следующую"
 
-#: team/templates/team/iteration.html:52
+#: team/templates/team/iteration.html:54
 msgid "Update"
 msgstr "Обновить"
 
-#: team/templates/team/iteration.html:67
+#: team/templates/team/iteration.html:64
+msgid "Delete"
+msgstr "Удалить"
+
+#: team/templates/team/iteration.html:81
 msgid "Add"
 msgstr "Добавить"
 
@@ -237,15 +241,19 @@ msgstr "Детали"
 msgid "report #{} was successfully created"
 msgstr "отчет #{} был успешно создан"
 
-#: team/views.py:185
+#: team/views.py:186
 msgid "report can not be created: {}"
 msgstr "отчет не может быть создан: {}"
 
-#: team/views.py:195
+#: team/views.py:197
+msgid "report #{} was successfully deleted"
+msgstr "отчет #{} был успешно удален"
+
+#: team/views.py:208
 msgid "this iteration is not the latest"
 msgstr "эта итерация не последняя"
 
-#: team/views.py:215
+#: team/views.py:228
 msgid "iteration #{} was created with {} new reports"
 msgstr "итерация #{} была создана с {} новыми отчетами"
 
