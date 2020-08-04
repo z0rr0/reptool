@@ -55,17 +55,27 @@ class ReportTestCase(TeamBaseTestCase):
         self.assertNotEqual(comment, report.comment)
         self.assertNotEqual(status, report.status)
         self.assertNotEqual(delegation, report.delegation)
+        self.assertNotEqual(self.workers[1].pk, report.worker_id)
 
         resp = self.client.get(url)
         self.assertEqual(resp.status_code, 405)
 
-        resp = self.client.post(url, data={'comment': comment, 'status': status, 'delegation': delegation})
+        resp = self.client.post(
+            url,
+            data={
+                'comment': comment,
+                'status': status,
+                'delegation': delegation,
+                'worker': self.workers[1].pk,
+            },
+        )
         self.assertEqual(resp.status_code, 302)
 
-        report.refresh_from_db(fields=('comment', 'status'))
+        report.refresh_from_db(fields=('comment', 'status', 'worker'))
         self.assertEqual(report.comment, comment)
         self.assertEqual(report.status, status)
         self.assertNotEqual(delegation, report.delegation)
+        self.assertEqual(self.workers[1].pk, report.worker_id)
 
     def test_create(self):
         delegation = Report.DELEGATION_CHOICES[0][0]  # tell

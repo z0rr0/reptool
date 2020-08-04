@@ -7,7 +7,7 @@ from team.models import Iteration, Report, Task, Tracker
 class ReportForm(ModelForm):
     class Meta:
         model = Report
-        fields = ['status', 'comment', 'delegation']
+        fields = ['status', 'comment', 'delegation', 'worker']
         widgets = {
             'status': Select(attrs={
                 'class': 'form-control my-1 mr-sm-2'
@@ -17,6 +17,9 @@ class ReportForm(ModelForm):
                 'placeholder': _('Comment'),
             }),
             'delegation': Select(attrs={
+                'class': 'form-control my-1 mr-sm-2'
+            }),
+            'worker': Select(attrs={
                 'class': 'form-control my-1 mr-sm-2'
             }),
         }

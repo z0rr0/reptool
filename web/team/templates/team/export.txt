@@ -3,6 +3,6 @@
 ------------
 {{ worker }}{% for status, show_comment, reports in status_reports %}
 {{ status }}{% for report in reports %}
-{{ report.task.url }} {{ report.task.title }}{%if show_comment and report.comment %}
+{{ report.task.url }} {{ report.task.title|safe }}{%if show_comment and report.comment %}
 {{ report.comment }}{% endif %}{% endfor %}
 {% endfor %}{% endfor %}
