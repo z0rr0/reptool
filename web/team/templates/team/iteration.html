@@ -16,6 +16,7 @@
             id="iteration_create">
         {% csrf_token %}
         <button type="submit" class="btn btn-primary mb-2">{% trans "Create Next" %}</button>
+        &nbsp;&nbsp;&nbsp;{{ workers|join:", " }}
       </form>
     </div>
   {% endif %}

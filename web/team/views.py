@@ -1,4 +1,5 @@
 from itertools import groupby
+from random import shuffle
 from typing import Iterable, List, Tuple
 
 from django.conf import settings
@@ -131,10 +132,17 @@ class IterationDetailView(DetailView):
             result.append((worker, cls._set_reports_form(items)))
         return result
 
+    @staticmethod
+    def workers_order(worker_reports: List[Tuple[Worker, List[Report]]]) -> List[Worker]:
+        workers = [worker for worker, _ in worker_reports]
+        shuffle(workers)
+        return workers
+
     def get_context_data(self, **kwargs):
         data = super().get_context_data(**kwargs)
         if self.object:
             data['worker_reports'] = self._prepare_data(self.object)
+            data['workers'] = self.workers_order(data['worker_reports'])
         return data
 
 
