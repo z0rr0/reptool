@@ -36,7 +36,7 @@ make_done.short_description = _('Mark selected as done')
 class ReportAdmin(admin.ModelAdmin):
     list_display = ['id', 'iteration', 'worker', 'task', 'delegation', 'status', 'updated', 'created']
     search_fields = ('task__number', 'task__title', 'worker__name')
-    list_filter = ['iteration__start', 'created', 'delegation', 'status']
+    list_filter = ['iteration__start', 'created', 'delegation', 'status', 'worker']
     actions = [make_done]
     list_select_related = ['iteration', 'worker', 'task']
     list_per_page = 30
