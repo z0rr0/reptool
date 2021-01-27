@@ -34,15 +34,24 @@
   <hr>
   {% for worker, reports in worker_reports %}
     <h3>
-      <span id="worker_{{ worker.id }}">{{ worker }}</span>
+      <span id="worker_{{ worker.id }}">
+          {% if worker.has_dashboard %}
+            <a href="{{ worker.dashboard }}" title="{% trans "got to dashboard" %}" target="_blank">{{ worker }}</a>
+          {% else %}
+            {{ worker }}
+          {% endif %}
+      </span>
     </h3>
     <table class="table">
       <tbody>
       {% for report in reports %}
         <tr class="bg-{% if report.is_done %}success{% elif report.is_in_progress %}info{% else %}warning{% endif %}">
-          <td class="task"><a href="{{ report.task.url }}" title="{{ report.task.number }}">{{ report.task.number }}</a>
+          <td class="task">
+              <a href="{{ report.task.url }}" title="{{ report.task.number }}">{{ report.task.number }}</a>
           </td>
-          <td>{{ report.task.title }}</td>
+          <td>
+              <span title="{{ report.task.title }}">{{ report.task.title|truncatechars:80 }}</span>
+          </td>
           <td>
             <form class="form-inline"
                   action="{% url 'report_update' report.pk %}"

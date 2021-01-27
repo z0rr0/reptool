@@ -46,7 +46,7 @@ class CreatedUpdatedModel(models.Model):
 
 
 class CommentModel(models.Model):
-    comment = models.TextField(_('comment'), default='', null=False, blank=True)
+    comment = models.TextField(_('comment'), default='', blank=True)
 
     class Meta:
         abstract = True
@@ -71,6 +71,11 @@ class Tracker(CreatedUpdatedModel, NameModel):
 
 class Worker(CreatedUpdatedModel, NameModel):
     email = models.EmailField(_('email'))
+    dashboard = models.URLField(_('dashboard'), default='')
+
+    @property
+    def has_dashboard(self) -> bool:
+        return self.dashboard != ''
 
 
 class Task(CreatedUpdatedModel, CommentModel):
