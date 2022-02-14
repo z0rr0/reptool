@@ -170,15 +170,26 @@ class IterationTestCase(TeamBaseTestCase):
         content = resp.content.decode()
 
         for r in self.iteration.reports.select_related('worker', 'task__tracker'):
-            self.assertIn(r.worker.name, content)
+            check_method = self.assertNotIn if r.worker.no_export else self.assertIn
+            check_method(r.worker.name, content)
             task = '{} {}'.format(r.task.url, r.task.title)
-            self.assertIn(task, content)
+            check_method(task, content)
 
     def test_export(self):
         url = '/iterations/{}/export/'.format(self.iteration.id)
         self._export(url)
 
     def test_export_planned(self):
+        url = '/iterations/{}/export/planned/'.format(self.iteration.id)
+        self._export(url)
+
+    def test_no_export_workers(self):
+        no_export_worker = Worker.objects.get(name='John')
+        no_export_worker.no_export = True
+        no_export_worker.save(update_fields=['no_export'])
+
+        url = '/iterations/{}/export/'.format(self.iteration.id)
+        self._export(url)
         url = '/iterations/{}/export/planned/'.format(self.iteration.id)
         self._export(url)
 

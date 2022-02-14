@@ -19,13 +19,13 @@ from team.models import Iteration, iteration_dates, Report, Worker
 class Export:
     """Export processor"""
 
-    def __init__(self, iteration: Iteration, planned: bool = False):
-        """
-        :param iteration: iteration for export
-        :param planned: move not done reports to planned
-        """
-        self.iteration = iteration
+    def __init__(self, iteration: Iteration, planned: bool = False) -> None:
         self.planned = planned
+        self.reports = iteration.reports.filter(worker__no_export=False).select_related(
+            'worker', 'task__tracker'
+        ).order_by(
+            'worker', 'status', 'task'
+        )
         self.status_map = dict(Report.STATUS_CHOICES)
 
     def _show_comment(self, status: str) -> bool:
@@ -35,11 +35,7 @@ class Export:
 
     def get_reports(self) -> List[Tuple[Worker, List[Tuple[str, bool, Tuple[Report]]]]]:
         result = []
-        reports = self.iteration.reports.select_related(
-            'worker', 'task__tracker'
-        ).order_by(
-            'worker', 'status', 'task'
-        )
+        reports = list(self.reports)
         for worker, items in groupby(reports, lambda x: x.worker):
             worker_reports = [
                 (self.status_map[status], self._show_comment(status), tuple(task_items))
@@ -51,11 +47,7 @@ class Export:
     def get_planned_reports(self) -> List[Tuple[Worker, List[Tuple[str, bool, List[Report]]]]]:
         """It returns in_progress reports duplicated in planned section"""
         result = []
-        reports = self.iteration.reports.select_related(
-            'worker', 'task__tracker'
-        ).order_by(
-            'worker', 'status', 'task'
-        )
+        reports = list(self.reports)
         for worker, items in groupby(reports, lambda x: x.worker):
             worker_reports = {
                 status: list(task_items)

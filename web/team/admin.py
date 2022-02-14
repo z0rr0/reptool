@@ -10,7 +10,7 @@ class TrackerAdmin(admin.ModelAdmin):
 
 
 class WorkerAdmin(admin.ModelAdmin):
-    list_display = ['name', 'email', 'dashboard', 'created']
+    list_display = ['name', 'email', 'dashboard', 'no_export', 'created']
     search_fields = ('name', 'email')
 
 

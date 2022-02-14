@@ -72,6 +72,7 @@ class Tracker(CreatedUpdatedModel, NameModel):
 class Worker(CreatedUpdatedModel, NameModel):
     email = models.EmailField(_('email'))
     dashboard = models.URLField(_('dashboard'), default='')
+    no_export = models.BooleanField(_('no export'), default=False)
 
     @property
     def has_dashboard(self) -> bool:

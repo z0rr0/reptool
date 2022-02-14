@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-09-13 11:11+0300\n"
-"PO-Revision-Date: 2021-01-27 18:55+0300\n"
+"POT-Creation-Date: 2022-02-14 18:59+0300\n"
+"PO-Revision-Date: 2022-02-14 18:59+0300\n"
 "Last-Translator: Alexander Zaitsev <me@axv.email>\n"
 "Language-Team: \n"
 "Language: ru\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
 "%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n"
 "%100>=11 && n%100<=14)? 2 : 3);\n"
-"X-Generator: Poedit 2.3\n"
+"X-Generator: Poedit 3.0\n"
 
 #: team/admin.py:33
 msgid "Mark selected as done"
@@ -81,83 +81,87 @@ msgstr "email"
 msgid "dashboard"
 msgstr "панель"
 
-#: team/models.py:82
+#: team/models.py:75
+msgid "no export"
+msgstr "не экспортировать"
+
+#: team/models.py:83
 msgid "tracker"
 msgstr "трекер"
 
-#: team/models.py:83
+#: team/models.py:84
 msgid "number"
 msgstr "номер"
 
-#: team/models.py:84
+#: team/models.py:85
 msgid "title"
 msgstr "заголовок"
 
-#: team/models.py:102
+#: team/models.py:103
 msgid "start"
 msgstr "начало"
 
-#: team/models.py:103
+#: team/models.py:104
 msgid "stop"
 msgstr "завершение"
 
-#: team/models.py:125
+#: team/models.py:126
 msgid "Planned"
 msgstr "Запланировано"
 
-#: team/models.py:126
+#: team/models.py:127
 msgid "In progress"
 msgstr "В работе"
 
-#: team/models.py:127
+#: team/models.py:128
 msgid "Done"
 msgstr "Сделано"
 
-#: team/models.py:131
+#: team/models.py:132
 msgid "Tell"
 msgstr "Сообщать"
 
-#: team/models.py:132
+#: team/models.py:133
 msgid "Sell"
 msgstr "Продавать"
 
-#: team/models.py:133
+#: team/models.py:134
 msgid "Consult"
 msgstr "Советоваться"
 
-#: team/models.py:134
+#: team/models.py:135
 msgid "Agree"
 msgstr "Договариваться"
 
-#: team/models.py:135
+#: team/models.py:136
 msgid "Advise"
 msgstr "Предлагать"
 
-#: team/models.py:136
+#: team/models.py:137
 msgid "Inquire"
 msgstr "Спрашивать"
 
-#: team/models.py:137
+#: team/models.py:138
 msgid "Delegate"
 msgstr "Делегировать"
 
-#: team/models.py:141
+#: team/models.py:142
 msgid "iteration"
 msgstr "итерация"
 
-#: team/models.py:144
+#: team/models.py:145
 msgid "worker"
 msgstr "сотрудник"
 
-#: team/models.py:145
+#: team/models.py:146
 msgid "task"
 msgstr "задача"
 
-#: team/models.py:146
+#: team/models.py:147
 msgid "status"
 msgstr "статус"
 
-#: team/models.py:148
+#: team/models.py:149
 msgid "delegation"
 msgstr "делегирование"
 
@@ -245,23 +249,23 @@ msgstr "Создано"
 msgid "Show details"
 msgstr "Детали"
 
-#: team/views.py:189
+#: team/views.py:181
 msgid "report #{} was successfully created"
 msgstr "отчет #{} был успешно создан"
 
-#: team/views.py:194
+#: team/views.py:186
 msgid "report can not be created: {}"
 msgstr "отчет не может быть создан: {}"
 
-#: team/views.py:205
+#: team/views.py:197
 msgid "report #{} was successfully deleted"
 msgstr "отчет #{} был успешно удален"
 
-#: team/views.py:216
+#: team/views.py:208
 msgid "this iteration is not the latest"
 msgstr "эта итерация не последняя"
 
-#: team/views.py:236
+#: team/views.py:228
 msgid "iteration #{} was created with {} new reports"
 msgstr "итерация #{} была создана с {} новыми отчетами"
 
