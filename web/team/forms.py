@@ -1,10 +1,16 @@
-from django.forms import CharField, ModelForm, Select, TextInput, ValidationError
+from django.forms import CharField, ModelChoiceField, ModelForm, Select, TextInput, ValidationError
 from django.utils.translation import gettext_lazy as _
 
-from team.models import Iteration, Report, Task, Tracker
+from team.models import Iteration, Report, Task, Tracker, Worker
 
 
 class ReportForm(ModelForm):
+
+    worker = ModelChoiceField(
+        queryset=Worker.objects.filter(disabled=False).order_by('name'),
+        widget=Select(attrs={'class': 'form-control my-1 mr-sm-2'})
+    )
+
     class Meta:
         model = Report
         fields = ['status', 'comment', 'delegation', 'worker']
@@ -17,9 +23,6 @@ class ReportForm(ModelForm):
                 'placeholder': _('Comment'),
             }),
             'delegation': Select(attrs={
-                'class': 'form-control my-1 mr-sm-2'
-            }),
-            'worker': Select(attrs={
                 'class': 'form-control my-1 mr-sm-2'
             }),
         }
