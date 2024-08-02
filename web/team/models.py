@@ -74,9 +74,10 @@ class Worker(CreatedUpdatedModel, NameModel):
     dashboard = models.URLField(_('dashboard'), default='')
     no_export = models.BooleanField(_('no export'), default=False)
     disabled = models.BooleanField(_('disabled'), default=False)
+    order = models.IntegerField(_('order'), default=0)
 
     class Meta:
-        ordering = ('name', 'email')
+        ordering = ('order', 'name', 'email')
 
     @property
     def has_dashboard(self) -> bool:

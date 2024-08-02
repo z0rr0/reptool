@@ -18,7 +18,7 @@ disable_workers.short_description = _('Disable selected workers')
 
 
 class WorkerAdmin(admin.ModelAdmin):
-    list_display = ['name', 'email', 'dashboard_link', 'no_export', 'disabled', 'created']
+    list_display = ['name', 'email', 'dashboard_link', 'no_export', 'disabled', 'order', 'created']
     search_fields = ('name', 'email')
     actions = [disable_workers]
 
