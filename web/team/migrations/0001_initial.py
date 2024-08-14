@@ -24,7 +24,7 @@ class Migration(migrations.Migration):
             ],
             options={
                 'ordering': ('start',),
-                'index_together': {('start', 'stop')},
+                'indexes': [models.Index(fields=['start', 'stop'], name='start_stop_idx')],
             },
         ),
         migrations.CreateModel(
