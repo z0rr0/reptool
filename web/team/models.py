@@ -110,7 +110,7 @@ class Iteration(CreatedUpdatedModel, CommentModel):
 
     class Meta:
         ordering = ('-start',)
-        index_together = ('start', 'stop')
+        indexes = [models.Index(fields=['start', 'stop'], name='start_stop_idx')]
 
     def __str__(self) -> str:
         return '{start} / {stop}'.format(
