@@ -1,11 +1,11 @@
 from itertools import groupby
 from random import shuffle
-from typing import Iterable, List, Tuple
+from typing import Any, Iterable, TypeAlias
 
 from django.conf import settings
 from django.contrib import messages
 from django.db import models, transaction
-from django.http import HttpResponse, HttpResponseNotAllowed
+from django.http import HttpRequest, HttpResponse, HttpResponseNotAllowed, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect, reverse
 from django.template.loader import render_to_string
 from django.utils.translation import gettext_lazy as _
@@ -14,6 +14,9 @@ from django.views.generic import DetailView, ListView, UpdateView
 
 from team.forms import IterationForm, ReportCreateForm, ReportForm
 from team.models import Iteration, iteration_dates, Report, Worker
+
+
+ReportType: TypeAlias = list[tuple[str, bool, tuple[Report, ...]]]
 
 
 class Export:
@@ -33,19 +36,21 @@ class Export:
             return True
         return status != Report.PLANNED
 
-    def get_reports(self) -> List[Tuple[Worker, List[Tuple[str, bool, Tuple[Report]]]]]:
-        result = []
-        reports = list(self.reports)
+    def get_reports(self) -> list[tuple[Worker, ReportType]]:
+        result: list[tuple[Worker, ReportType]] = []
+        reports: list[Report] = list(self.reports)
+
         for worker, items in groupby(reports, lambda x: x.worker):
-            worker_reports = [
+            worker_reports: ReportType = [
                 (self.status_map[status], self._show_comment(status), tuple(task_items))
                 for status, task_items in groupby(items, lambda y: y.status)
             ]
             result.append((worker, worker_reports))
+
         return result
 
-    def get_planned_reports(self) -> List[Tuple[Worker, List[Tuple[str, bool, List[Report]]]]]:
-        """It returns in_progress reports duplicated in planned section"""
+    def get_planned_reports(self) -> list[tuple[Worker, list[tuple[str, bool, list[Report]]]]]:
+        """It returns in-progress reports duplicated in planned section"""
         result = []
         reports = list(self.reports)
         for worker, items in groupby(reports, lambda x: x.worker):
@@ -77,12 +82,12 @@ class IterationListView(ListView):
 
 class IterationSearchListView(IterationListView):
 
-    def get_context_data(self, *, object_list=None, **kwargs):
+    def get_context_data(self, *, object_list=None, **kwargs) -> dict[str, Any]:
         context_data = super().get_context_data(object_list=object_list, **kwargs)
         context_data['search'] = self.request.GET.get('search')
         return context_data
 
-    def get_queryset(self):
+    def get_queryset(self) -> models.QuerySet['Iteration']:
         queryset = super().get_queryset()
         search = self.request.GET.get('search')
         if search is not None:
@@ -107,15 +112,16 @@ class IterationDetailView(DetailView):
     template_name = 'team/iteration.html'
 
     @staticmethod
-    def _set_reports_form(reports: Iterable[Report]) -> List[Report]:
+    def _set_reports_form(reports: Iterable[Report]) -> list[Report]:
         result = []
         for r in reports:
             r.form = ReportForm(instance=r)
             result.append(r)
+
         return result
 
     @classmethod
-    def _prepare_data(cls, i: Iteration) -> List[Tuple[Worker, List[Report]]]:
+    def _prepare_data(cls, i: Iteration) -> list[tuple[Worker, list[Report]]]:
         result = []
         i.form = IterationForm(instance=i)
         reports = i.reports.select_related('worker', 'task__tracker').order_by('worker', 'status', 'task')
@@ -125,12 +131,12 @@ class IterationDetailView(DetailView):
         return result
 
     @staticmethod
-    def workers_order(worker_reports: List[Tuple[Worker, List[Report]]]) -> List[Worker]:
+    def workers_order(worker_reports: list[tuple[Worker, list[Report]]]) -> list[Worker]:
         workers = [worker for worker, _ in worker_reports]
         shuffle(workers)
         return workers
 
-    def get_context_data(self, **kwargs):
+    def get_context_data(self, **kwargs) -> dict[str, Any]:
         data = super().get_context_data(**kwargs)
         if self.object:
             data['worker_reports'] = self._prepare_data(self.object)
@@ -148,7 +154,7 @@ class IterationUpdateView(PostUpdateView):
     model = Iteration
     form_class = IterationForm
 
-    def get_success_url(self):
+    def get_success_url(self) -> str:
         return reverse('iteration', kwargs={'pk': self.object.pk})
 
 
@@ -156,18 +162,18 @@ class ReportUpdateView(PostUpdateView):
     model = Report
     form_class = ReportForm
 
-    def get_success_url(self):
+    def get_success_url(self) -> str:
         return self.object.anchor_url
 
 
-def index(request):
+def index(request: HttpRequest) -> HttpResponse:
     iteration = Iteration.objects.first()
     return IterationDetailView.as_view()(request, pk=iteration.pk)
 
 
 @require_POST
 @transaction.atomic()
-def report_create(request, iteration_id: int, worker_id: int):
+def report_create(request: HttpRequest, iteration_id: int, worker_id: int) -> HttpResponseRedirect:
     iteration = get_object_or_404(Iteration, pk=iteration_id)
     worker = get_object_or_404(Worker, pk=worker_id)
 
@@ -191,10 +197,11 @@ def report_create(request, iteration_id: int, worker_id: int):
 
 @require_POST
 @transaction.atomic()
-def report_delete(request, pk: int):
+def report_delete(request: HttpRequest, pk: int) -> HttpResponseRedirect:
     report = get_object_or_404(Report, pk=pk)
     url = report.anchor_url
     msg = _('report #{} was successfully deleted')
+
     report.delete()
     messages.success(request, msg.format(pk))
     return redirect(url)
@@ -202,7 +209,7 @@ def report_delete(request, pk: int):
 
 @require_POST
 @transaction.atomic()
-def iteration_create(request, pk: int):
+def iteration_create(request: HttpRequest, pk: int) -> HttpResponseRedirect:
     base_iteration = get_object_or_404(Iteration, pk=pk)
     if not base_iteration.is_last:
         messages.error(request, _('this iteration is not the latest'))
@@ -231,7 +238,7 @@ def iteration_create(request, pk: int):
 
 
 @require_GET
-def iteration_export(request, pk: int):
+def iteration_export(request: HttpRequest, pk: int) -> HttpResponse:
     iteration = get_object_or_404(Iteration, pk=pk)
     exporter = Export(iteration)
     response = HttpResponse(exporter.render(), content_type='text/plain')
@@ -243,7 +250,7 @@ def iteration_export(request, pk: int):
 
 
 @require_GET
-def iteration_export_planned(request, pk: int):
+def iteration_export_planned(request: HttpRequest, pk: int) -> HttpResponse:
     iteration = get_object_or_404(Iteration, pk=pk)
     exporter = Export(iteration, planned=True)
     response = HttpResponse(exporter.render(), content_type='text/plain')

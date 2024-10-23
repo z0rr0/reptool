@@ -10,7 +10,7 @@ class TrackerAdmin(admin.ModelAdmin):
     search_fields = ('name',)
 
 
-def disable_workers(modeladmin, request, queryset):
+def disable_workers(_, __, queryset):
     queryset.update(disabled=True)
 
 
@@ -40,7 +40,7 @@ class IterationAdmin(admin.ModelAdmin):
     list_filter = ['start']
 
 
-def make_done(modeladmin, request, queryset):
+def make_done(_, __, queryset):
     queryset.exclude(status=Report.DONE).update(status=Report.DONE)
 
 
