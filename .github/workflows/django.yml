@@ -13,22 +13,27 @@ jobs:
     strategy:
       max-parallel: 4
       matrix:
-        python-version: [3.12.5]
+        python-version: [3.13]
 
     steps:
-    - uses: actions/checkout@v4
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v5
-      with:
-        python-version: ${{ matrix.python-version }}
-    - name: Install Dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt
-    - name: Lint with flake8
-      run: |
-        pip install flake8
-        flake8 . --max-line-length=120 --exclude=migrations,settings.py
-    - name: Run Tests
-      run: |
-        make test
+      - uses: actions/checkout@v4
+      - name: Install the latest version of uv
+        uses: astral-sh/setup-uv@v5
+        with:
+          version: "latest"
+          python-version: ${{ matrix.python-version }}
+          enable-cache: true
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install the project
+        run: uv sync --all-extras --dev
+
+      - name: Lint with flake8
+        run: flake8 . --max-line-length=120 --exclude=.env,.venv,migrations,settings.py
+
+      - name: Run Tests
+        run: make test

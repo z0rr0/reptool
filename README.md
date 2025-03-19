@@ -6,6 +6,7 @@
 
 Team work report tool.
 
+Makefile uses [uv](https://github.com/astral-sh/uv) tool.
 
 ###  Translation
 

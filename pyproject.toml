@@ -1,0 +1,26 @@
+[project]
+name = "reptool"
+version = "1.1.7"
+description = "Team work report tool"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "django>=5.1.7",
+]
+
+[dependency-groups]
+dev = [
+    "flake8>=7.1.2",
+]
+
+[tool.ruff]
+line-length = 120
+target-version = "py313"
+
+[tool.ruff.format]
+quote-style = "single"
+
+[tool.black]
+line-length = 120
+target-version = ['py313']
+skip-string-normalization = true

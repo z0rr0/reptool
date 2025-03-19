@@ -8,11 +8,11 @@ PID=/tmp/.$(NAME).pid
 all: test
 
 test:
-	python $(MANAGE) test team
+	uv run $(MANAGE) test team
 
 start:
 	@echo "  >  $(NAME)"
-	python $(MANAGE) runserver --noreload $(HOST):$(PORT) & echo $$! > $(PID)
+	uv run $(MANAGE) runserver --noreload $(HOST):$(PORT) & echo $$! > $(PID)
 	@-cat $(PID)
 	@echo "  >  http://$(ADDR):$(PORT)"
 
